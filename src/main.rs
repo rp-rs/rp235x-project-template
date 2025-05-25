@@ -73,4 +73,15 @@ fn main() -> ! {
     }
 }
 
+/// Program metadata for `picotool info`
+#[link_section = ".bi_entries"]
+#[used]
+pub static PICOTOOL_ENTRIES: [rp235x_hal::binary_info::EntryAddr; 5] = [
+    rp235x_hal::binary_info::rp_cargo_bin_name!(),
+    rp235x_hal::binary_info::rp_cargo_version!(),
+    rp235x_hal::binary_info::rp_program_description!(c"RP2350 Template"),
+    rp235x_hal::binary_info::rp_cargo_homepage_url!(),
+    rp235x_hal::binary_info::rp_program_build_attribute!(),
+];
+
 // End of file
