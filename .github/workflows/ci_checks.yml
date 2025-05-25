@@ -29,7 +29,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
-          target: thumbv6m-none-eabi
+          target: thumbv8m.main-none-eabihf
       - run: cargo install flip-link
       - run: cargo build --all
       - run: cargo build --all --release
@@ -43,7 +43,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy
-          target: thumbv6m-none-eabi
+          target: thumbv8m.main-none-eabihf
       - run: cargo clippy --all-features -- --deny=warnings
   formatting:
     name: Formatting
@@ -55,5 +55,5 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt
-          target: thumbv6m-none-eabi
+          target: thumbv8m.main-none-eabihf
       - run: cargo fmt -- --check
