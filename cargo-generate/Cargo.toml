@@ -17,7 +17,11 @@ panic-probe = { version = "1", features = ["print-defmt"] }
 #rp-pico2 = "0.9" # TODO: Do we have that crate already ?
 
 # If you're not going to use a Board Support Package you'll need these:
-rp235x-hal = { version="0.3", features=["rt", "critical-section-impl"] }
+rp235x-hal = { version = "0.3", features = [
+    "rt",
+    "critical-section-impl",
+    "binary-info",
+] }
 
 # cargo build/run
 [profile.dev]
