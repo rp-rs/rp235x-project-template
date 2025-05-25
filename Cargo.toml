@@ -1,6 +1,6 @@
 [package]
 edition = "2021"
-name = "rp2040-project-template"
+name = "rp235x-project-template"
 version = "0.1.0"
 license = "MIT OR Apache-2.0"
 
@@ -13,64 +13,50 @@ defmt = "1"
 defmt-rtt = "1"
 panic-probe = { version = "1", features = ["print-defmt"] }
 
-# We're using a Pico by default on this template
-rp-pico = "0.9"
-
-# but you can use any BSP. Uncomment this to use the pro_micro_rp2040 BSP instead
-# sparkfun-pro-micro-rp2040 = "0.8"
+# We're using a Pico 2 by default on this template
+#rp-pico2 = "0.9" # TODO: Do we have that crate already ?
 
 # If you're not going to use a Board Support Package you'll need these:
-# rp2040-hal = { version="0.11", features=["rt", "critical-section-impl"] }
-# rp2040-boot2 = "0.3"
+rp235x-hal = { version="0.3", features=["rt", "critical-section-impl"] }
 
 # cargo build/run
 [profile.dev]
-codegen-units = 1
 debug = 2
 debug-assertions = true
-incremental = false
-opt-level = 3
+opt-level = 2
 overflow-checks = true
 
 # cargo build/run --release
 [profile.release]
-codegen-units = 1
 debug = 2
 debug-assertions = false
-incremental = false
 lto = 'fat'
-opt-level = 3
+opt-level = 2
 overflow-checks = false
 
 # do not optimize proc-macro crates = faster builds from scratch
 [profile.dev.build-override]
-codegen-units = 8
 debug = false
 debug-assertions = false
-opt-level = 0
 overflow-checks = false
+opt-level = 0
 
 [profile.release.build-override]
-codegen-units = 8
 debug = false
 debug-assertions = false
-opt-level = 0
 overflow-checks = false
+opt-level = 0
 
 # cargo test
 [profile.test]
-codegen-units = 1
 debug = 2
 debug-assertions = true
-incremental = false
-opt-level = 3
+opt-level = 2
 overflow-checks = true
 
 # cargo test --release
 [profile.bench]
-codegen-units = 1
 debug = 2
 debug-assertions = false
-incremental = false
 lto = 'fat'
 opt-level = 3

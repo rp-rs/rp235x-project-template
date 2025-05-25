@@ -1,6 +1,6 @@
-# Project template for rp2040-hal
+# Project template for rp235x-hal
 
-This template is intended as a starting point for developing your own firmware based on the rp2040-hal.
+This template is intended as a starting point for developing your own firmware based on the rp235x-hal.
 
 It includes all of the `knurling-rs` tooling as showcased in https://github.com/knurling-rs/app-template (`defmt`, `defmt-rtt`, `panic-probe`, `flip-link`) to make development as easy as possible.
 
@@ -21,7 +21,6 @@ If you aren't using a debugger (or want to use other debugging configurations), 
     <li><a href="#project-creation">Project Creation</a></li>
     <li><a href="#running">Running</a></li>
     <li><a href="#alternative-runners">Alternative runners</a></li>
-    <li><a href="#notes-on-using-rp2040_boot2">Notes on using rp2040_boot2</a></li>
     <li><a href="#feature-flags">Feature flags</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
@@ -37,7 +36,7 @@ If you aren't using a debugger (or want to use other debugging configurations), 
   
 - The standard Rust tooling (cargo, rustup) which you can install from https://rustup.rs/
 
-- Toolchain support for the cortex-m0+ processors in the rp2040 (thumbv6m-none-eabi)
+- Toolchain support for the cortex-m33 processors in the rp235x (thumbv8m.main-none-eabihf)
 
 - flip-link - this allows you to detect stack-overflows on the first core, which is the only supported target for now.
 
@@ -55,13 +54,13 @@ If you aren't using a debugger (or want to use other debugging configurations), 
 <details open="open">
   <summary><h2 style="display: inline-block" id="installation-of-development-dependencies">Installation of development dependencies</h2></summary>
 
+If you are using Nix, you can use the `devShell` made available in `flake.nix`. Otherwise, you can follow these commands (provided you already have [`Rustup`](https://rustup.rs/) installed):
+
 ```sh
-rustup target install thumbv6m-none-eabi
+rustup target install thumbv8m.main-none-eabihf
 cargo install flip-link
 # Installs the probe-rs tools, including probe-rs run, our recommended default runner
 cargo install --locked probe-rs-tools
-# If you want to use elf2uf2-rs instead, do...
-cargo install --locked elf2uf2-rs
 ```
 If you get the error ``binary `cargo-embed` already exists`` during installation of probe-rs, run `cargo uninstall cargo-embed` to uninstall your older version of cargo-embed before trying again.
 
@@ -74,7 +73,7 @@ If you get the error ``binary `cargo-embed` already exists`` during installation
 ### Using `cargo-generate`
 
 ```sh
-cargo generate --git https://github.com/rp-rs/rp2040-project-template
+cargo generate --git https://github.com/rp-rs/rp235x-project-template
 ```
 
 Follow the wizard 🪄 and enjoy your new project.
@@ -192,30 +191,25 @@ Some of the options for your `runner` are listed below:
   *Step 5* - Launch a debug session by choosing `Run`>`Start Debugging` (or press F5)
 
 * **Loading a UF2 over USB**  
-  *Step 1* - Install [`elf2uf2-rs`](https://github.com/JoNil/elf2uf2-rs):
-
-  ```console
-  $ cargo install elf2uf2-rs --locked
-  ```
+  *Step 1* - Install [`picotool`](https://github.com/raspberrypi/picotool):
 
   *Step 2* - Modify `.cargo/config` to change the default runner
 
   ```toml
   [target.`cfg(all(target-arch = "arm", target_os = "none"))`]
-  runner = "elf2uf2-rs -d"
+  runner = "picotool load -u -v -x -t elf"
   ```
 
   The all-Arm wildcard `'cfg(all(target_arch = "arm", target_os = "none"))'` is used
   by default in the template files, but may also be replaced by
-  `thumbv6m-none-eabi`.
+  `thumbv8m.main-none-eabihf`.
 
-  *Step 3* - Boot your RP2040 into "USB Bootloader mode", typically by rebooting
+  *Step 3* - Boot your RP235x into "USB Bootloader mode", typically by rebooting
   whilst holding some kind of "Boot Select" button. On Linux, you will also need
   to 'mount' the device, like you would a USB Thumb Drive.
 
   *Step 4* - Use `cargo run`, which will compile the code and start the
-  specified 'runner'. As the 'runner' is the `elf2uf2-rs` tool, it will build a UF2
-  file and copy it to your RP2040.
+  specified 'runner'. As the 'runner' is the `picotool`, it will copy the firmware to your RP235x.
 
   ```console
   $ cargo run --release
@@ -237,32 +231,16 @@ Some of the options for your `runner` are listed below:
   not supported in Rust. An alternative is TBC.
 
 </details>
-<!-- Notes on using rp2040_hal and rp2040_boot2 -->
-<details open="open">
-  <summary><h2 style="display: inline-block" id="notes-on-using-rp2040_boot2">Notes on using rp2040_boot2</h2></summary>
-
-  The second-stage boot loader must be written to the .boot2 section. That
-  is usually handled by the board support package (e.g.`rp-pico`). If you don't use
-  one, you should initialize the boot loader manually. This can be done by adding the
-  following to the beginning of main.rs:
-  ```rust
-  use rp2040_boot2;
-  #[link_section = ".boot2"]
-  #[used]
-  pub static BOOT_LOADER: [u8; 256] = rp2040_boot2::BOOT_LOADER_W25Q080;
-  ```
-
-</details>
 
 <!-- Feature flags -->
 <details open="open">
   <summary><h2 style="display: inline-block" id="feature-flags">Feature flags</h2></summary>
 
-  There are several [feature flags in rp2040-hal](https://docs.rs/rp2040-hal/latest/rp2040_hal/#crate-features).
-  If you want to enable some of them, uncomment the `rp2040-hal` dependency in `Cargo.toml` and add the
+  There are several [feature flags in rp235x-hal](https://docs.rs/rp235x-hal/latest/rp235x_hal/#crate-features).
+  If you want to enable some of them, uncomment the `rp235x-hal` dependency in `Cargo.toml` and add the
   desired feature flags there. For example, to enable ROM functions for f64 math using the feature `rom-v2-intrinsics`:
   ```
-  rp2040-hal = { version="0.10", features=["rt", "critical-section-impl", "rom-v2-intrinsics"] }
+  rp235x-hal = { version="0.3", features=["rt", "critical-section-impl", "rom-v2-intrinsics"] }
   ```
 </details>
 
@@ -273,7 +251,7 @@ Some of the options for your `runner` are listed below:
 NOTE These packages are under active development. As such, it is likely to
 remain volatile until a 1.0.0 release.
 
-See the [open issues](https://github.com/rp-rs/rp2040-project-template/issues) for a list of
+See the [open issues](https://github.com/rp-rs/rp235x-project-template/issues) for a list of
 proposed features (and known issues).
 
 ## Contributing
@@ -287,7 +265,7 @@ The steps are:
 3. Make some changes to the code or documentation.
 4. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 5. Push to the Feature Branch (`git push origin feature/AmazingFeature`)
-6. Create a [New Pull Request](https://github.com/rp-rs/rp2040-project-template/pulls)
+6. Create a [New Pull Request](https://github.com/rp-rs/rp235x-project-template/pulls)
 7. An admin will review the Pull Request and discuss any changes that may be required.
 8. Once everyone is happy, the Pull Request can be merged by an admin, and your work is part of our project!
 
@@ -311,5 +289,5 @@ under these terms.
 
 ## Contact
 
-Raise an issue: [https://github.com/rp-rs/rp2040-project-template/issues](https://github.com/rp-rs/rp2040-project-template/issues)
+Raise an issue: [https://github.com/rp-rs/rp235x-project-template/issues](https://github.com/rp-rs/rp235x-project-template/issues)
 Chat to us on Matrix: [#rp-rs:matrix.org](https://matrix.to/#/#rp-rs:matrix.org)

@@ -1,25 +1,29 @@
-[target.'cfg(all(target_arch = "arm", target_os = "none"))']
+[target.thumbv8m.main-none-eabihf]
 # Choose a default "cargo run" tool (see README for more info)
 # - `probe-rs` provides flashing and defmt via a hardware debugger, and stack unwind on panic
-# - elf2uf2-rs loads firmware over USB when the rp2040 is in boot mode
-runner = "probe-rs run --chip RP2040 --protocol swd"
-# runner = "elf2uf2-rs -d"
+# - `picotool` loads an elf, skipping unchanged flash sectors, verify it, and execute it
+#runner = "probe-rs run --chip RP235x --protocol swd"
+runner = "picotool load -u -v -x -t elf"
 
-linker = "flip-link"
+# Pass some extra options to rustc, some of which get passed on to the linker.
+#
+# * linker argument --nmagic turns off page alignment of sections (which saves
+#   flash space)
+# * linker argument -Tlink.x tells the linker to use link.x as a linker script.
+#   This is usually provided by the cortex-m-rt crate, and by default the
+#   version in that crate will include a file called `memory.x` which describes
+#   the particular memory layout for your specific chip.
+# * linker argument -Tdefmt.x also tells the linker to use `defmt.x` as a
+#   secondary linker script. This is required to make defmt_rtt work.
 rustflags = [
-  "-C", "link-arg=--nmagic",
-  "-C", "link-arg=-Tlink.x",
-  "-C", "link-arg=-Tdefmt.x",
-
-  # Code-size optimizations.
-  #   trap unreachable can save a lot of space, but requires nightly compiler.
-  #   uncomment the next line if you wish to enable it
-  # "-Z", "trap-unreachable=no",
-  "-C", "no-vectorize-loops",
+    "-C", "link-arg=--nmagic",
+    "-C", "link-arg=-Tlink.x",
+    "-C", "link-arg=-Tdefmt.x",
+    "-C", "target-cpu=cortex-m33",
 ]
 
 [build]
-target = "thumbv6m-none-eabi"
+target = "thumbv8m.main-none-eabihf"
 
 [env]
 DEFMT_LOG = "debug"
