@@ -52,10 +52,10 @@ fn main() -> ! {
         &mut pac.RESETS,
     );
 
-    // This is the correct pin on the Raspberry Pico board. On other boards, even if they have an
+    // This is the correct pin on the Raspberry Pico 2 board. On other boards, even if they have an
     // on-board LED, it might need to be changed.
     //
-    // Notably, on the Pico W, the LED is not connected to any of the RP2040 GPIOs but to the cyw43 module instead.
+    // Notably, on the Pico 2 W, the LED is not connected to any of the RP2350 GPIOs but to the cyw43 module instead.
     // One way to do that is by using [embassy](https://github.com/embassy-rs/embassy/blob/main/examples/rp/src/bin/wifi_blinky.rs)
     //
     // If you have a Pico W and want to toggle a LED with a simple GPIO output pin, you can connect an external
