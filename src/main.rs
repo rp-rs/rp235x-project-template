@@ -74,7 +74,7 @@ fn main() -> ! {
 }
 
 /// Program metadata for `picotool info`
-#[link_section = ".bi_entries"]
+#[unsafe(link_section = ".bi_entries")]
 #[used]
 pub static PICOTOOL_ENTRIES: [rp235x_hal::binary_info::EntryAddr; 5] = [
     rp235x_hal::binary_info::rp_cargo_bin_name!(),
