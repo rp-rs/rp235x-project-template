@@ -34,7 +34,9 @@ If you aren't using a debugger (or want to use other debugging configurations), 
 <details open="open">
   <summary><h2 style="display: inline-block" id="requirements">Requirements</h2></summary>
   
-- The standard Rust tooling (cargo, rustup) which you can install from https://rustup.rs/
+- The standard Rust tooling (cargo, rustup) which you can install from <https://rustup.rs/>
+  
+  Note that, this template targets Rust 2024 edition, which requires Rust 1.85. So, it is recommended to use the latest stable version.
 
 - Toolchain support for the cortex-m33 processors in the rp235x (thumbv8m.main-none-eabihf)
 
