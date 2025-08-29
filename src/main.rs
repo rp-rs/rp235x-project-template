@@ -10,7 +10,7 @@ use embedded_hal::digital::OutputPin;
 use panic_probe as _;
 use rp235x_hal::clocks::init_clocks_and_plls;
 use rp235x_hal::{self as hal, entry};
-use rp235x_hal::{pac, Clock};
+use rp235x_hal::{Clock, pac};
 
 // Provide an alias for our BSP so we can switch targets quickly.
 // Uncomment the BSP you included in Cargo.toml, the rest of the code does not need to change.
@@ -74,7 +74,7 @@ fn main() -> ! {
 }
 
 /// Program metadata for `picotool info`
-#[link_section = ".bi_entries"]
+#[unsafe(link_section = ".bi_entries")]
 #[used]
 pub static PICOTOOL_ENTRIES: [rp235x_hal::binary_info::EntryAddr; 5] = [
     rp235x_hal::binary_info::rp_cargo_bin_name!(),
