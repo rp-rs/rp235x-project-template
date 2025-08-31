@@ -26,7 +26,7 @@
                     "programBinary": "target/thumbv8m.main-none-eabihf/debug/rp235x-project-template",
                     "rttEnabled": true
                     // Uncomment this if you've downloaded the SVD from
-                    // https://github.com/raspberrypi/pico-sdk/raw/2.1.1/src/rp2350/hardware_regs/RP2350.svd
+                    // https://github.com/raspberrypi/pico-sdk/raw/2.2.0/src/rp2350/hardware_regs/RP2350.svd
                     // and placed it in the .vscode directory
                     // "svdFile": "./.vscode/rp235x.svd",
                 }
