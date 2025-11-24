@@ -26,11 +26,7 @@ connect_under_reset = false
 [default.rtt]
 enabled = true
 up_mode = "NoBlockSkip"
-channels = [
-    { up = 0, down = 0, name = "name", up_mode = "NoBlockSkip", format = "Defmt" },
-]
 timeout = 3000
-show_timestamps = true
 log_enabled = false
 log_path = "./logs"
 
