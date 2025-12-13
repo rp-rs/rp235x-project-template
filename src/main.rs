@@ -4,7 +4,7 @@
 #![no_std]
 #![no_main]
 
-use defmt::*;
+use defmt::info;
 use defmt_rtt as _;
 use embedded_hal::digital::OutputPin;
 use panic_probe as _;

@@ -9,7 +9,7 @@
 //! new memory settings.
 
 use std::fs::File;
-use std::io::Write;
+use std::io::Write as _;
 use std::path::PathBuf;
 
 fn main() {

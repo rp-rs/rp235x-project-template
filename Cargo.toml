@@ -3,6 +3,10 @@ edition = "2024"
 name = "rp235x-project-template"
 version = "0.1.0"
 license = "MIT OR Apache-2.0"
+description = "Project template for rp235x-hal"
+repository = "https://github.com/rp-rs/rp235x-project-template"
+keywords = ["embedded", "rp235x", "hal", "rust", "template"]
+categories = ["embedded", "hardware-support"]
 
 [dependencies]
 cortex-m = "0.7"
@@ -64,3 +68,12 @@ debug = 2
 debug-assertions = false
 lto = 'fat'
 opt-level = 3
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+multiple_crate_versions = "allow"
+
+nursery = { level = "warn", priority = -1 }
+cargo = { level = "warn", priority = -1 }
+# restriction = { level = "warn", priority = -1 }
