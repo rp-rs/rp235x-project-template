@@ -5,8 +5,8 @@ version = "0.1.0"
 license = "MIT OR Apache-2.0"
 description = "Project template for rp235x-hal"
 repository = "https://github.com/rp-rs/rp235x-project-template"
-keywords = ["embedded", "rp235x", "hal", "rust", "template"]
-categories = ["embedded", "hardware-support"]
+keywords = ["embedded", "rp235x", "hal", "rust", "no-std"]
+categories = ["embedded", "no-std"]
 
 [dependencies]
 cortex-m = "0.7"
