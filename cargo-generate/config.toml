@@ -31,8 +31,42 @@ rustflags = [
     "-C", "target-cpu=cortex-m33",
 ]
 
+[target.riscv32imac-unknown-none-elf]
+{% case flash_method -%}
+  {%- when "probe-rs" -%}
+    runner = "picotool load -u -v -x -t elf"
+  {%- when "picotool" -%}
+    runner = "picotool load -u -v -x -t elf"
+  {%- when "none" -%}
+  {%- else -%}
+    {%- if flash_method != "" -%}
+      runner = "{{ flash_method_custom }}"
+    {%- endif -%}
+{%- endcase %}
+
+# Pass some extra options to rustc, some of which get passed on to the linker.
+#
+# * linker argument --nmagic turns off page alignment of sections (which saves
+#   flash space)
+# * linker argument -Trp235x_riscv.x also tells the linker to use
+#   `rp235x_riscv.x` as a linker script. This adds in RP2350 RISC-V specific
+#   things that the riscv-rt crate's `link.x` requires and then includes
+#   `link.x` automatically. This is the reverse of how we do it on Cortex-M.
+# * linker argument -Tdefmt.x also tells the linker to use `defmt.x` as a
+#   secondary linker script. This is required to make defmt_rtt work.
+rustflags = [
+    "-C", "link-arg=--nmagic",
+    "-C", "link-arg=-Trp235x_riscv.x",
+    "-C", "link-arg=-Tdefmt.x",
+]
+
 [build]
-target = "thumbv8m.main-none-eabihf"
+{% case target_arch -%}
+  {%- when "RISC-V" -%}
+    target = "riscv32imac-unknown-none-elf"
+  {%- when "ARMv8" -%}
+    target = "thumbv8m.main-none-eabihf"
+{%- endcase %}
 
 [env]
 DEFMT_LOG = "debug"

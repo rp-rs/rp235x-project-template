@@ -24,5 +24,12 @@ fn main() {
     f.write_all(memory_x).unwrap();
     println!("cargo:rerun-if-changed=memory.x");
 
+    // The file `rp235x_riscv.x` is what we specify in `.cargo/config.toml` for
+    // RISC-V builds
+    let rp235x_riscv_x = include_bytes!("rp235x_riscv.x");
+    let mut f = File::create(out.join("rp235x_riscv.x")).unwrap();
+    f.write_all(rp235x_riscv_x).unwrap();
+    println!("cargo:rerun-if-changed=rp235x_riscv.x");
+
     println!("cargo:rerun-if-changed=build.rs");
 }
