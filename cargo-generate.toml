@@ -5,8 +5,21 @@ exclude = [".github/workflows/ci_checks.yml"]
 pre = ["cargo-generate/remove_rprs.rhai"]
 
 [placeholders]
+target_arch = { prompt = "Which architecture do you intend to use?", choices = [
+  "RISC-V",
+  "ARMv8",
+], default = "ARMv8", type = "string" }
+
+[conditional.'target_arch == "ARMv8"'.placeholders]
 flash_method = { prompt = "Which flashing method do you intend to use?", choices = [
   "probe-rs",
+  "picotool",
+  "custom",
+  "none"
+], default = "picotool", type = "string" }
+
+[conditional.'target_arch == "RISC-V"'.placeholders]
+flash_method = { prompt = "Which flashing method do you intend to use?", choices = [
   "picotool",
   "custom",
   "none"
