@@ -13,7 +13,11 @@
       let pkgs = import nixpkgs { inherit system; overlays = [ (import rust-overlay) ]; };
       in {
         devShells.default = pkgs.mkShell {
-          propagatedBuildInputs = [ pkgs.probe-rs pkgs.picotool ];
+          propagatedBuildInputs = with pkgs; [
+            probe-rs
+            picotool
+            flip-link
+          ];
 
           buildInputs = [
             (pkgs.rust-bin.stable.latest.default.override {
