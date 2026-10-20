@@ -14,6 +14,10 @@
     {%- endif -%}
 {%- endcase %}
 
+# Use flip-link to ensure safety on stack overflow.
+# Comment this out to disable it.
+linker = "flip-link"
+
 # Pass some extra options to rustc, some of which get passed on to the linker.
 #
 # * linker argument --nmagic turns off page alignment of sections (which saves
