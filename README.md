@@ -2,7 +2,7 @@
 
 This template is intended as a starting point for developing your own firmware based on the rp235x-hal.
 
-It includes all of the `knurling-rs` tooling as showcased in https://github.com/knurling-rs/app-template (`defmt`, `defmt-rtt`, `panic-probe`, `flip-link`) to make development as easy as possible.
+It includes all of the `knurling-rs` tooling as showcased in https://github.com/knurling-rs/app-template (`defmt`, `defmt-rtt`, `panic-probe`) to make development as easy as possible.
 
 `probe-rs` is configured as the default runner, so you can start your program as easy as
 ```sh
@@ -40,8 +40,6 @@ If you aren't using a debugger (or want to use other debugging configurations), 
 
 - Toolchain support for the cortex-m33 processors in the rp235x (thumbv8m.main-none-eabihf)
 
-- flip-link - this allows you to detect stack-overflows on the first core, which is the only supported target for now.
-
 - (by default) A [`probe-rs` installation](https://probe.rs/docs/getting-started/installation)
 - A [`probe-rs` compatible](https://probe.rs/docs/getting-started/probe-setup) probe
 
@@ -60,7 +58,6 @@ If you are using Nix, you can use the `devShell` made available in `flake.nix`. 
 
 ```sh
 rustup target install thumbv8m.main-none-eabihf
-cargo install flip-link
 # Installs the probe-rs tools, including probe-rs run, our recommended default runner
 cargo install --locked probe-rs-tools
 ```
